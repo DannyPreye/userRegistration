@@ -1,36 +1,39 @@
 <?php
 include_once 'inc\functions\validate.inc.php'; 
 include_once './inc/functions/connect.inc.php'; 
+include_once './inc/functions/checkGet.php'; 
+
 
 $jsondata = array();
+$errCode = array();
+
 
 if($_SERVER['REQUEST_METHOD']=='POST'){
 
-    $email= santize_data($_POST['email']);
-    $password = santize_data($_POST['password']);
-    $hashPsw = md5($password);
-  
-    if($email !== "" && $hashPsw !==""){
-      
-        $users = $connect_db->get_user_data($email,$hashPsw);
-    
-        if(count($users)>0){
-            $alp ='qsjd'.rand(1000,5000);
-        echo str_shuffle($alp);
-                $jsondata['fullname'] = $users[0]['fullName'];
-                $jsondata['phone'] = $users[0]['phoneNumber'];
-                $jsondata['email'] = $users[0]['email'];
-                
-           
-          
+    if(empty($error)){ 
+        //if error array is empty fetch user details from the database
+        $result = $connect_db->get_user_data($email,$password);
+
+        if(!empty($result)){
+            // if the data was fetched sucessfully from the db, store the data in the json array for encoding
+            array_push($jsondata,$result);
+            $errCode['code']="00";
         }
         else{
-            header("HTTP/1.0 401 Unauthorized"); 
-            echo 'failed';
+            // Else store the error code in the errcode array
+            $errCode['code']="01";
+            $errCode['login'] = "Login Failed";
         }
     }
+    else{
+        
+        array_push($jsondata,$error);
+        $errCode['errorCode']="02";
+    }
+  
 }
 header('content-type:application/json');
+array_push($jsondata,$errCode);
 echo json_encode($jsondata);
 
 

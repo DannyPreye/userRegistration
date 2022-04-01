@@ -14,10 +14,10 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
 
     if(($checkEmail==false) && ($checkUsername==false)){
         if(empty($error)){
-            $response = $connect_db->insert_user_to_db($fullName,$phone_num,$email,$username,$password);
+            $response = $connect_db->insert_user_to_db($fullName,$phone_num,$email,$username, $hashPsw);
 
             if($response==true){
-                $result = $connect_db->get_user_data($email,$password);
+                $result = $connect_db->get_user_data($email, $hashPsw);
                 array_push($jsondata,$result);
                 $errCode['code']="00";
            }else{

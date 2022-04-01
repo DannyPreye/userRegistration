@@ -69,7 +69,7 @@
         }
 
    
-
+        // Login user with email
         public function get_user_data($email,$psw){
           try {
                 $sql = "SELECT fullName,email FROM $this->table_name WHERE email='$email' && 
@@ -86,10 +86,26 @@
         }
 
 
+        // login user with username
+        public function login_with_username($username,$psw){
+            try {
+                  $sql = "SELECT fullName,email FROM $this->table_name WHERE username='$username' && 
+                  password = '$psw';";
+                  $stmt = $this->dbConnect()->prepare($sql);
+                  $stmt->execute();
+  
+                  return $stmt->fetch();
+            }
+            catch (PDOException $e){
+              echo "Login Error:".$e->getMessage();
+            }
+             
+          }
+
         public function check_userEmail($email){
             try {
 
-                $sql = "SELECT * FROM $this->table_name WHERE email='$email';";
+                $sql = "SELECT email FROM $this->table_name WHERE email='$email';";
                 $stmt = $this->dbConnect()->prepare($sql);
                 $stmt->execute();
              
@@ -108,7 +124,7 @@
         public function check_username($username){
             try {
 
-                $sql = "SELECT * FROM $this->table_name WHERE username='$username';";
+                $sql = "SELECT username FROM $this->table_name WHERE username='$username';";
                 $stmt = $this->dbConnect()->prepare($sql);
                 $stmt->execute();
              
