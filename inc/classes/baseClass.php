@@ -145,8 +145,11 @@
          // Create blog table 
         public function create_blog(){
             try {
-                $sql = "CREATE TABLE IF NOT EXISTS $this->table_name(id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY  KEY, 
-                    title VARCHAR(225), content LONGBLOB, picture VARCHAR(225), time TIMESTAMP CURRENT_TIMESTAMP, ";
+                $sql = "CREATE TABLE IF NOT EXISTS $this->table_name(
+                    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY  KEY, 
+                    title VARCHAR(225), 
+                    content LONGBLOB NOT NULL, picture VARCHAR(225), 
+                    Created_On datetime default CURRENT_TIMESTAMP);";
                     $this->dbConnect()->exec($sql);
                     return "Table Created";
             }

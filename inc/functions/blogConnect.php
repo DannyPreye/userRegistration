@@ -13,4 +13,4 @@
     $connect_db->dbConnect();
 
     // Create the table
-    $connect_db->create_db_table();
+    $connect_db->create_blog();
