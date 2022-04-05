@@ -3,6 +3,10 @@ include_once './inc/functions/checkPost.inc.php';
 include_once './inc/functions/connect.inc.php'; 
 
 header('content-type: application/json');
+header("Access-Control-Allow-Origin: *");
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header("Access-Control-Allow-Headers: Content-Type, Origin, X-Requested-With, Accept, Authorization");
+
 $errCode = array();
 $jsondata = array();
 $registrationError = "";
@@ -18,7 +22,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
 
             if($response==true){
                 $result = $connect_db->get_user_data($email, $hashPsw);
-                array_push($jsondata,$result);
+                $jsondata["user"]=$result;
                 $errCode['code']="00";
            }else{
                $errCode['code']="01";
